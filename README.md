@@ -87,26 +87,32 @@ The bad: known damp problem on the ground floor; two rooms were taken offline in
 <!-- One complete question and answer, pasted as text, with the source line
      visible. Milestone 4. -->
 
-**Question:**
+**Question:** How are juniors and seniors ordered in the housing lottery?
 
 **Answer:**
 
+```Juniors and seniors are ordered by accumulated credit hours first, with a random tie-break used if needed.
+
+Source: admin_housing_lottery.txt
 ```
-```
 
-**My relevance cutoff:**
+**My relevance cutoff:** 0.6
 
-<!-- The number you set in config.py, and how you got there.
+I kept the relevance cutoff at 0.6 because the five questions covered by my corpus had best distances between 0.204 and 0.356, while the five out-of-scope questions had distances between 0.825 and 0.934. There was a large gap between the two groups, so 0.6 separates them without rejecting any of my five test questions.
 
-     You ran five questions your corpus covers and the five in OUT_OF_SCOPE
-     that it clearly doesn't, and wrote down the best distance for each. What
-     did those two groups look like? Where was the gap? Put the actual numbers
-     here — the table below wants all ten rows.
-
-     Milestone 4. -->
 
 | Question | In corpus? | Best distance |
-|---|---|---|
+|---|---|---:|
+| How are juniors and seniors ordered in the housing lottery? | Yes | 0.225 |
+| How long are the wait times at Kestrel Commons between 12:15 and 1:00? | Yes | 0.223 |
+| What material are the CS 210 exams based on? | Yes | 0.300 |
+| Which floors in Aldridge Hall are quiet floors? | Yes | 0.356 |
+| Do dining dollars roll over from spring to the following autumn? | Yes | 0.204 |
+| What is the capital of Mongolia? | No | 0.825 |
+| How do I change the oil in a diesel engine? | No | 0.934 |
+| Who won the 1994 World Cup? | No | 0.886 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.844 |
+| How do I write a for loop in Rust? | No | 0.891 |
 |  |  |  |
 
 ## How I Used AI
