@@ -1,6 +1,6 @@
 # The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+Khanh Do — Corpus: `campus_life`
 
 > **This file is your submission.** Fill it in as you go — most sections get
 > written during the milestone that produces them, not at the end.
@@ -20,12 +20,7 @@
 # Unit 1
 
 ## What This Does
-
-<!-- Three or four sentences. Which corpus you picked, and the kinds of
-     questions your system answers. Write it for someone who has never seen
-     this repo.
-
-     Milestone 5. -->
+The Unofficial Guide is a RAG system built using the `campus_life` corpus, which contains short posts about courses, dining, housing, and other parts of student life. It searches these documents to answer specific questions such as dining wait times, course exams, housing rules, and campus policies. The system retrieves relevant chunks and uses them to generate an answer that names its source. If the retrieved information is not relevant enough, the relevance gate refuses to answer instead of using unrelated information.
 
 ## Chunking Strategy
 
@@ -117,18 +112,12 @@ I kept the relevance cutoff at 0.6 because the five questions covered by my corp
 
 ## How I Used AI
 
-<!-- Two specific moments. For each: what you asked for, what came back, and
-     what you changed about it.
+**1.** 
+I asked AI to help me understand and design the chunking strategy. My first version made every paragraph a separate chunk, which produced 271 chunks averaging only 101 characters and created very short heading-only chunks. After inspecting the output, I changed the approach to combine neighboring paragraphs up to 400 characters, which reduced the result to 100 more complete chunks.
 
-     "I asked Claude to write the chunking function from my notes. It ignored
-     the overlap, so I added that myself" is the level of detail we're after.
-     "I used AI to help me code" is not.
-
-     Milestone 5. -->
-
-**1.**
 
 **2.**
+I asked AI to explain semantic search, top-k, distance, and the relevance cutoff because I did not understand how they related to retrieval. I then tested five in-corpus and five out-of-corpus questions myself. The in-corpus distances were between 0.204 and 0.356, while the out-of-corpus distances were between 0.825 and 0.934, so I kept the existing cutoff of 0.6 instead of changing it unnecessarily.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
