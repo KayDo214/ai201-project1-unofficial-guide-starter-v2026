@@ -165,53 +165,36 @@ results/run_2026-09-23_2029_before.md
 | 5 | Source contains expected information | MET | The source documents named in the answers contained the expected facts for all five test questions. |
 
 ## Diagnoses
-
-No criteria were missed in the baseline evaluation. The system met all five targets. Since there were no failures to diagnose, the next improvement focuses on testing whether retrieval can be improved further rather than fixing a known failure.
+The RAG itself did not appear to fail: the dining-dollars question retrieved the correct source with a best distance of 0.204 and generated the correct answer. However, the scorer marked that answer as a failure because it lowercased the expected phrase without lowercasing the generated answer. This showed that the problem was in the evaluation stage rather than retrieval or generation.
 
 ## The Improvement
 
 **What I changed:**
+I fixed the answer scorer to compare the expected phrase and generated answer case-insensitively. The original scorer lowercased the expected phrase but did not lowercase the answer.
+
 
 **Why I picked it:**
-
-<!-- Connect it to a specific diagnosis above in one sentence. If you can't,
-     you picked a fix because it sounded impressive. -->
+The dining-dollars answer contained the correct information and came from the correct source, with a best retrieval distance of 0.204, but the scorer incorrectly marked it as a failure. Since the problem was caused by case-sensitive evaluation rather than the RAG pipeline, I fixed the scorer instead of changing retrieval.
 
 ### Run Log — After
 
-<!-- Same format, same five criteria, three runs each.
-     `python run_eval.py --label after` -->
-
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 4. Chunks make sense on their own | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+| 5. Source actually supports answer | 4 of 5 | 5 of 5 | 5 of 5 | 5 of 5 | MET |
+
+The baseline run was produced before `scorer.py` was available, so these verdicts were determined manually by inspecting the retrieved chunks, generated answers, and source attribution in the saved run log.
 
 **Did it help?**
 
-<!-- Say plainly whether it did, and how you know. If it made things worse,
-     say that — a change that backfired, honestly reported, earns full credit
-     and is more interesting than one that worked. What matters is that you can
-     tell.
-
-     Milestone 4. -->
+Yes, it helped the evaluation produce the correct result. The retrieval distances and retrieved documents did not change, but the dining-dollars question changed from a false failure to a pass because the scorer now handles capitalization consistently. After the fix, all five in-corpus questions passed in all three runs, and the gate continued to refuse all five out-of-scope questions.
 
 ## What's Still Broken
 
-<!-- For each criterion still missed after your fix: what you'd do about it,
-     and why you stopped where you did.
-
-     "I ran out of time" is fine if it's true. Pretending nothing is left is
-     not.
-
-     Milestone 5. -->
+Nothing from my five acceptance criteria remains broken after the fix. The system meets all five targets in the after evaluation. A remaining limitation is that the scorer uses phrase matching, so it could still reject an answer that is correct but uses different wording or a synonym.
 
 ## What I'd Do Differently
-
-<!-- Knowing what you know now — which of your five criteria would you write
-     differently, and why?
-
-     Milestone 5. -->
+I would design the evaluation criteria and scorer earlier and test the scorer with different capitalization before running the full evaluation. I would also make the expected answers specific phrases from the source documents so that the scoring rule is easier to interpret.
